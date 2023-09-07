@@ -75,6 +75,8 @@ public class FileSystemStorage implements IStorage {
     this.executor = new LocalExecutor(meta.isReadOnly(), meta.isHasData(), meta.getExtraParams());
     this.server = new FileSystemServer(meta.getPort(), executor);
     this.thread = new Thread(server);
+    logger.error("thread = {}", thread);
+    logger.error("i am starting");
     thread.start();
   }
 
@@ -166,10 +168,12 @@ public class FileSystemStorage implements IStorage {
     if (server != null) {
       server.stop();
       server = null;
+      logger.error("FileSystemStorage server stops");
     }
     if (thread != null) {
       thread.interrupt();
       thread = null;
+      logger.error("FileSystemStorage thread stops");
     }
   }
 }

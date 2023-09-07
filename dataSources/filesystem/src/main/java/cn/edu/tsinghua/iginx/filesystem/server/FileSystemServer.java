@@ -45,6 +45,7 @@ public class FileSystemServer implements Runnable {
               .maxWorkerThreads(config.getMaxThriftWrokerThreadNum())
               .protocolFactory(new TBinaryProtocol.Factory());
       server = new TThreadPoolServer(args);
+      logger.error("serverTransport = {} server = {}", serverTransport, server);
       logger.info("File System service starts successfully!");
     } catch (TTransportException e) {
       logger.error("File System service starts failure: {}", e.getMessage());
@@ -55,10 +56,12 @@ public class FileSystemServer implements Runnable {
     if (server != null) {
       server.stop();
       server = null;
+      logger.error("FileSystemServer server stops");
     }
     if (serverTransport != null) {
       serverTransport.close();
       serverTransport = null;
+      logger.error("FileSystemServer serverTransport stops");
     }
   }
 
