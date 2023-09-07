@@ -165,15 +165,15 @@ public class FileSystemStorage implements IStorage {
   @Override
   public synchronized void release() throws PhysicalException {
     executor.close();
-    if (server != null) {
-      server.stop();
-      server = null;
-      logger.error("FileSystemStorage server stops");
-    }
     if (thread != null) {
       thread.interrupt();
       thread = null;
       logger.error("FileSystemStorage thread stops");
+    }
+    if (server != null) {
+      server.stop();
+      server = null;
+      logger.error("FileSystemStorage server stops");
     }
   }
 }
