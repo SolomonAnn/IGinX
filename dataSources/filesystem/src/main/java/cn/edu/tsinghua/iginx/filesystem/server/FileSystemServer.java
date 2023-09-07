@@ -67,6 +67,11 @@ public class FileSystemServer implements Runnable {
 
   @Override
   public void run() {
-    server.serve();
+    try {
+      server.serve();
+    } catch (Exception e) {
+      logger.error("run failed {}", e.getMessage());
+      e.printStackTrace();
+    }
   }
 }
