@@ -30,26 +30,6 @@ public class FileSystemServer implements Runnable {
   public FileSystemServer(int port, Executor executor) {
     this.port = port;
     this.executor = executor;
-    initServer();
-  }
-
-  private void initServer() {
-    try {
-      TProcessor processor =
-          new FileSystemService.Processor<FileSystemService.Iface>(new FileSystemWorker(executor));
-      serverTransport = new TServerSocket(port);
-      TThreadPoolServer.Args args =
-          new TThreadPoolServer.Args(serverTransport)
-              .processor(processor)
-              .minWorkerThreads(config.getMinThriftWorkerThreadNum())
-              .maxWorkerThreads(config.getMaxThriftWrokerThreadNum())
-              .protocolFactory(new TBinaryProtocol.Factory());
-      server = new TThreadPoolServer(args);
-      logger.error("serverTransport = {} server = {}", serverTransport, server);
-      logger.info("File System service starts successfully!");
-    } catch (TTransportException e) {
-      logger.error("File System service starts failure: {}", e.getMessage());
-    }
   }
 
   public void stop() {
@@ -68,9 +48,21 @@ public class FileSystemServer implements Runnable {
   @Override
   public void run() {
     try {
+      TProcessor processor =
+          new FileSystemService.Processor<FileSystemService.Iface>(new FileSystemWorker(executor));
+      serverTransport = new TServerSocket(port);
+      TThreadPoolServer.Args args =
+          new TThreadPoolServer.Args(serverTransport)
+              .processor(processor)
+              .minWorkerThreads(config.getMinThriftWorkerThreadNum())
+              .maxWorkerThreads(config.getMaxThriftWrokerThreadNum())
+              .protocolFactory(new TBinaryProtocol.Factory());
+      server = new TThreadPoolServer(args);
+      logger.error("serverTransport = {} server = {}", serverTransport, server.isServing());
+      logger.info("File System service starts successfully!");
       server.serve();
-    } catch (Exception e) {
-      logger.error("run failed {}", e.getMessage());
+    } catch (TTransportException e) {
+      logger.error("File System service starts failure: {}", e.getMessage());
       e.printStackTrace();
     }
   }
