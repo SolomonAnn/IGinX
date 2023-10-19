@@ -42,9 +42,13 @@ do
 
   sh -c "sudo chmod -R 777 /var/lib/postgresql-$port/15/main"
 
-  sh -c "cd pgsql-$port/bin; sudo -u postgres ./initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions"
+  sh -c "cd pgsql-$port/bin;"
 
-  sh -c "cd pgsql-$port/bin; sudo -u postgres ./pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start"
+  sh -c "ls -lht"
 
-  sh -c "cd pgsql-$port/bin; sudo -u postgres ./psql -c \"ALTER USER postgres WITH PASSWORD 'postgres';\""
+  sh -c "sudo ./initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions"
+
+  sh -c "sudo ./pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start"
+
+  sh -c "sudo ./psql -c \"ALTER USER postgres WITH PASSWORD 'postgres';\""
 done
