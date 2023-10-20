@@ -39,7 +39,7 @@ password=""
 for port in "$@"
 do
 
-  sh -c "ls"
+  sh -c "pwd"
 
   sh -c "sudo mkdir -p /usr/lib/pgsql-$port"
 
