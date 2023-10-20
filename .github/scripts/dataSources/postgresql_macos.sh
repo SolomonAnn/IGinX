@@ -39,13 +39,11 @@ password=""
 for port in "$@"
 do
 
-  sh -c "pwd"
+  sh -c "sudo mkdir -p /Users/postgres/pgsql-$port"
 
-  sh -c "sudo mkdir -p /usr/lib/pgsql-$port"
+  sh -c "sudo chmod -R 777 /Users/postgres/pgsql-$port"
 
-  sh -c "sudo chmod -R 777 /usr/lib/pgsql-$port"
-
-  sh -c "sudo cp -R pgsql /usr/lib/pgsql-$port"
+  sh -c "sudo cp -R pgsql /Users/postgres/pgsql-$port"
 
   sh -c "sudo mkdir -p /var/lib/postgresql-$port/15/main"
 
@@ -55,13 +53,13 @@ do
 
   echo "cd pgsql-$port/bin; sudo -S -u postgres /bin/bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
 
-  sh -c "sudo su - postgres -c '/usr/lib/pgsql-$port/bin/initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
+  sh -c "sudo su - postgres -c '/Users/postgres/pgsql-$port/bin/initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
 
   echo "cd pgsql-$port/bin; sudo -u postgres /bin/bash -c './pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start'"
 
-  sh -c "sudo su - postgres -c '/usr/lib/pgsql-$port/bin/pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start'"
+  sh -c "sudo su - postgres -c '/Users/postgres/pgsql-$port/bin/pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start'"
 
   echo "cd pgsql-$port/bin; sudo -u postgres /bin/bash -c './psql -c \"ALTER USER postgres WITH PASSWORD '\''postgres'\'';\"'"\
 
-  sh -c "sudo su - postgres -c '/usr/lib/pgsql-$port/bin/psql -c \"ALTER USER postgres WITH PASSWORD '\''postgres'\'';\"'"
+  sh -c "sudo su - postgres -c '/Users/postgres/pgsql-$port/bin/psql -c \"ALTER USER postgres WITH PASSWORD '\''postgres'\'';\"'"
 done
