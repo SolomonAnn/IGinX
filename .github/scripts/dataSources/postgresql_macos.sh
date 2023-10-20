@@ -34,7 +34,7 @@ sh -c "sudo chown -R postgres /var/lib/postgresql/15/main"
 
 sh -c "sudo chmod -R 777 /var/lib/postgresql/15/main"
 
-password="\n"
+password=""
 
 for port in "$@"
 do
