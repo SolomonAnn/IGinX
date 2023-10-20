@@ -45,10 +45,6 @@ do
 
   sh -c "sudo cp -R pgsql /Users/postgres/pgsql-$port"
 
-  sh -c "ls /Users/postgres/pgsql-$port"
-
-  sh -c "ls /Users/postgres/pgsql-$port/bin"
-
   sh -c "sudo mkdir -p /var/lib/postgresql-$port/15/main"
 
   sh -c "sudo chown -R postgres /var/lib/postgresql-$port/15/main"
