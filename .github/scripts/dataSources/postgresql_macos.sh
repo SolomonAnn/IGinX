@@ -34,6 +34,8 @@ sh -c "sudo chown -R postgres /var/lib/postgresql/15/main"
 
 sh -c "sudo chmod -R 777 /var/lib/postgresql/15/main"
 
+password="\n"
+
 for port in "$@"
 do
   sh -c "sudo cp -R pgsql pgsql-$port"
@@ -44,9 +46,9 @@ do
 
   sh -c "sudo chmod -R 777 /var/lib/postgresql-$port/15/main"
 
-  echo "cd pgsql-$port/bin; echo \"\n\" | sudo -S -u postgres /bin/bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
+  echo "cd pgsql-$port/bin; echo \"$password\" | sudo -S -u postgres /bin/bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
 
-  sh -c "cd pgsql-$port/bin; echo \"\n\" | sudo -S -u postgres /bin/bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
+  sh -c "cd pgsql-$port/bin; echo \"$password\" | sudo -S -u postgres /bin/bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
 
   echo "cd pgsql-$port/bin; sudo -u postgres /bin/bash -c './pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start'"
 
