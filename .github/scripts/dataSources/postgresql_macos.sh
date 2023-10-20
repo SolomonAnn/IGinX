@@ -24,7 +24,7 @@ sh -c "sudo dscl . create /Groups/postgres passwd '*'"
 
 sh -c "sudo mkdir /Users/postgres"
 
-sh -c "chown -R postgres:postgres /Users/postgres"
+sh -c "sudo chown -R postgres:postgres /Users/postgres"
 
 sh -c "sudo dscl . -create /Users/postgres NFSHomeDirectory /Users/postgres"
 
