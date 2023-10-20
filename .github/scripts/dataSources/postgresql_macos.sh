@@ -32,8 +32,6 @@ sh -c "sudo chown -R postgres /var/lib/postgresql/15/main"
 
 sh -c "sudo chmod -R 777 /var/lib/postgresql/15/main"
 
-password="postgres"
-
 for port in "$@"
 do
   sh -c "sudo cp -R pgsql pgsql-$port"
@@ -44,9 +42,9 @@ do
 
   sh -c "sudo chmod -R 777 /var/lib/postgresql-$port/15/main"
 
-  sh -c "cd pgsql-$port/bin; sudo -S <<< $password -u postgres bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions'"
+  sh -c "cd pgsql-$port/bin; sudo -S -u postgres bash -c './initdb -D /var/lib/postgresql-$port/15/main --auth trust --no-instructions' <<< $password"
 
-  sh -c "cd pgsql-$port/bin; sudo -S <<< $password -u postgres bash -c './pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start'"
+  sh -c "cd pgsql-$port/bin; sudo -S -u postgres bash -c './pg_ctl -D /var/lib/postgresql-$port/15/main -o \"-F -p $port\" start' <<< $password"
 
-  sh -c "cd pgsql-$port/bin; sudo -S <<< $password -u postgres bash -c './psql -c \"ALTER USER postgres WITH PASSWORD '\''postgres'\'';\"'"
+  sh -c "cd pgsql-$port/bin; sudo -S -u postgres bash -c './psql -c \"ALTER USER postgres WITH PASSWORD '\''postgres'\'';\"' <<< $password"
 done
